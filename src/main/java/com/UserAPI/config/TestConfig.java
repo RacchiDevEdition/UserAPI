@@ -34,10 +34,14 @@ public class TestConfig implements CommandLineRunner {
 		Post p1 = new Post(null, null, "sexo", Instant.parse("2019-06-20T19:53:07Z"));
 		User u1 = new User(null, "Miss", "Jennie", "Nichols",
 				"48df5229235ada28389b91e60a935e4f9b73eb4bdb855ef9258a1751f10bdc5d", "USA", "jennie.nichols@example.com",
-				Gender.F, null);
+				Gender.F);
+
+		u1.getPosts().add(p1);
+
 
 		UserPost up1 = new UserPost(p1, u1);
 
+		
 		userRepository.save(u1);
 		postRepository.save(p1);
 		userPostRepository.save(up1);

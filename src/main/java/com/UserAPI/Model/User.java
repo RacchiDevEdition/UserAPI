@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.UserAPI.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,9 +34,12 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "creator")
 	private Set<Post> posts = new HashSet<>();
+	
+	@OneToMany(mappedBy = "id.creator")
+	private Set<UserPost> userPosts = new HashSet<>();
 
 	public User(Long id, String title, String firstName, String lastName, String password, String nationality,
-			String email, Gender gender, Set<Post> posts) {
+			String email, Gender gender) {
 
 		this.gender = gender;
 		this.id = id;
@@ -45,7 +49,6 @@ public class User implements Serializable {
 		this.password = password;
 		this.nationality = nationality;
 		this.email = email;
-		this.posts = posts;
 	}
 
 	public User() {
@@ -92,7 +95,7 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getNationality() {
+	public 		String getNationality() {
 		return nationality;
 	}
 
@@ -109,8 +112,13 @@ public class User implements Serializable {
 	}
 
 	public Set<Post> getPosts() {
-		return posts;
-	}
+		Set<Post> post = new HashSet<>();
+		for(UserPost p : userPosts) {
+			post.add(p.getPost());
+		}
+			return post;
+		}
+	
 
 	public String getEmail() {
 		return email;

@@ -6,15 +6,18 @@ import com.UserAPI.Model.Post;
 import com.UserAPI.Model.User;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Embeddable
 public class UserPostPk {
 
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name = "creator_id")
 	private User creator;
 
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name = "post_id")
 	private Post post;
 
 	public User getCreator() {

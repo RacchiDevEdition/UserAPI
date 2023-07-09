@@ -2,16 +2,18 @@ package com.UserAPI.Model;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
-
+import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,12 +34,19 @@ public class Post implements Serializable {
 	private Instant creationTime;
 	// private Set<Comentary> commentaries = new HashSet<>();
 
+	@OneToMany(mappedBy = "id.post")
+	private Set<UserPost> userPosts = new HashSet<>();
+
 	public Post(Long id, User creator, String content, Instant creationTime) {
 		super();
 		this.id = id;
 		this.creator = creator;
 		this.content = content;
 		this.creationTime = creationTime;
+	}
+
+	public Post() {
+
 	}
 
 	public Long getId() {
@@ -48,10 +57,7 @@ public class Post implements Serializable {
 		this.id = id;
 	}
 
-	public User getCreator() {
-		return creator;
-	}
-
+	
 	public void setCreator(User creator) {
 		this.creator = creator;
 	}
@@ -72,14 +78,20 @@ public class Post implements Serializable {
 		this.creationTime = creationTime;
 	}
 
+	public User getCreator() {
+		return creator;
+	}
+
+
+
 	// public Set<Comentary> getComentaries() {
 	// return commentaries;
 	// }
 
-	// @Override
-//	public int hashCode() {
-	// return Objects.hash(id);
-	// }
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
