@@ -21,21 +21,26 @@ public class Commentary implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "post_id")
-	private User creator;
+	@JoinColumn(name = "commentor_id")
+	private User commentor;
 	@ManyToOne
 	@JoinColumn(name = "post_id")
 	private Post post;
 	private String content;
 	private Integer likeCount;
 
-	public Commentary(Long id, User creator,Post post, String content, Integer likeCount) {
+	public Commentary(Long id, User commentor,Post post, String content, Integer likeCount) {
 		super();
 		this.id = id;
-		this.creator = creator;
+		this.commentor = commentor;
 		this.post = post;
 		this.content = content;
 		this.likeCount = likeCount;
+	}
+	
+	
+	public Commentary() {
+		
 	}
 
 	public Long getId() {
@@ -47,11 +52,11 @@ public class Commentary implements Serializable {
 	}
 
 	public User getCreator() {
-		return creator;
+		return commentor;
 	}
 
-	public void setCreatorC(User creator) {
-		this.creator = creator;
+	public void setCreatorC(User commentor) {
+		this.commentor = commentor;
 	}
 
 	public String getContent() {
@@ -69,5 +74,13 @@ public class Commentary implements Serializable {
 	public void setLikeCount(Integer likeCount) {
 		this.likeCount = likeCount;
 	}
+
+	@Override
+	public String toString() {
+		return "Commentary [id=" + id + ", commentor=" + commentor + ", post=" + post + ", content=" + content
+				+ ", likeCount=" + likeCount + "]";
+	}
+	
+	
 
 }

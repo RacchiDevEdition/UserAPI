@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.UserAPI.enums.Gender;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,9 +33,15 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "creator")
 	private Set<Post> posts = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "id.creator")
 	private Set<UserPost> userPosts = new HashSet<>();
+
+	@OneToMany(mappedBy = "commentor")
+	private Set<Commentary> commentaries = new HashSet<>();
+
+	@OneToMany(mappedBy = "id.commentor")
+	private Set<PostCommentary> postCommentaries = new HashSet<>();
 
 	public User(Long id, String title, String firstName, String lastName, String password, String nationality,
 			String email, Gender gender) {
@@ -95,7 +100,7 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public 		String getNationality() {
+	public String getNationality() {
 		return nationality;
 	}
 
@@ -113,12 +118,19 @@ public class User implements Serializable {
 
 	public Set<Post> getPosts() {
 		Set<Post> post = new HashSet<>();
-		for(UserPost p : userPosts) {
+		for (UserPost p : userPosts) {
 			post.add(p.getPost());
 		}
-			return post;
+		return post;
+	}
+
+	public Set<Commentary> getCommentaries() {
+		Set<Commentary> comments = new HashSet<>();
+		for (PostCommentary p : postCommentaries) {
+			comments.add(p.getCommentary());
 		}
-	
+		return comments;
+	}
 
 	public String getEmail() {
 		return email;

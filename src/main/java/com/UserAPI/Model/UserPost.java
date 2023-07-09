@@ -37,7 +37,6 @@ public class UserPost implements Serializable {
 		return id.getPost();
 	}
 
-	@JsonIgnore
 	public User getCreator() {
 		return id.getCreator();
 	}

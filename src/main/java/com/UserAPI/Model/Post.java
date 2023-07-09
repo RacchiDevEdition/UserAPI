@@ -32,10 +32,16 @@ public class Post implements Serializable {
 	private String content;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant creationTime;
-	// private Set<Comentary> commentaries = new HashSet<>();
 
 	@OneToMany(mappedBy = "id.post")
 	private Set<UserPost> userPosts = new HashSet<>();
+
+	@OneToMany(mappedBy = "id.post")
+	private Set<PostCommentary> commentaries = new HashSet<>();
+	
+	
+	@OneToMany(mappedBy = "post")
+	private Set<Commentary> comments = new HashSet<>();
 
 	public Post(Long id, User creator, String content, Instant creationTime) {
 		super();
@@ -79,12 +85,13 @@ public class Post implements Serializable {
 	}
 
 
-
-
-
-	// public Set<Comentary> getComentaries() {
-	// return commentaries;
-	// }
+	 public Set<Commentary> getComentaries() {
+		 Set<Commentary> comment = new HashSet<>();
+		 for(PostCommentary p : commentaries){
+			 comment.add(p.getCommentary());
+		 }
+		 return comment;
+	 }
 
 	@Override
 	public int hashCode() {
