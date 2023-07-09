@@ -35,8 +35,10 @@ public class TestConfig implements CommandLineRunner {
 		User u1 = new User(null, "Miss", "Jennie", "Nichols",
 				"48df5229235ada28389b91e60a935e4f9b73eb4bdb855ef9258a1751f10bdc5d", "USA", "jennie.nichols@example.com",
 				Gender.F);
+		
 
 		u1.getPosts().add(p1);
+		p1.setCreator(u1);
 
 
 		UserPost up1 = new UserPost(p1, u1);

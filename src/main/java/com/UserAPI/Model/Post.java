@@ -78,9 +78,7 @@ public class Post implements Serializable {
 		this.creationTime = creationTime;
 	}
 
-	public User getCreator() {
-		return creator;
-	}
+
 
 
 

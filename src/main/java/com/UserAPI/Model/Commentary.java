@@ -11,8 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_comentary")
-public class Comentary implements Serializable {
+@Table(name = "tb_commentary")
+public class Commentary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,15 +21,19 @@ public class Comentary implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "id_creatorC")
-	private User creatorC;
+	@JoinColumn(name = "post_id")
+	private User creator;
+	@ManyToOne
+	@JoinColumn(name = "post_id")
+	private Post post;
 	private String content;
 	private Integer likeCount;
 
-	public Comentary(Long id, User creatorC, String content, Integer likeCount) {
+	public Commentary(Long id, User creator,Post post, String content, Integer likeCount) {
 		super();
 		this.id = id;
-		this.creatorC = creatorC;
+		this.creator = creator;
+		this.post = post;
 		this.content = content;
 		this.likeCount = likeCount;
 	}
@@ -42,12 +46,12 @@ public class Comentary implements Serializable {
 		this.id = id;
 	}
 
-	public User getCreatorC() {
-		return creatorC;
+	public User getCreator() {
+		return creator;
 	}
 
-	public void setCreatorC(User creatorC) {
-		this.creatorC = creatorC;
+	public void setCreatorC(User creator) {
+		this.creator = creator;
 	}
 
 	public String getContent() {
