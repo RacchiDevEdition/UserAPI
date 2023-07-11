@@ -2,11 +2,15 @@ package com.UserAPI.Model;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,29 +30,26 @@ public class Post implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "creator_id")
 	private User creator;
 	private String content;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant creationTime;
 
-	@OneToMany(mappedBy = "id.post")
-	private Set<UserPost> userPosts = new HashSet<>();
-
-	@OneToMany(mappedBy = "id.post")
-	private Set<PostCommentary> commentaries = new HashSet<>();
-	
-	
+	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "post")
-	private Set<Commentary> comments = new HashSet<>();
+	private List<Commentary> comments = new ArrayList<>();
 
 	public Post(Long id, User creator, String content, Instant creationTime) {
-		super();
 		this.id = id;
 		this.creator = creator;
 		this.content = content;
 		this.creationTime = creationTime;
+
 	}
 
 	public Post() {
@@ -63,7 +64,6 @@ public class Post implements Serializable {
 		this.id = id;
 	}
 
-	
 	public void setCreator(User creator) {
 		this.creator = creator;
 	}
@@ -79,19 +79,14 @@ public class Post implements Serializable {
 	public Instant getCreationTime() {
 		return creationTime;
 	}
+	
+	public List<Commentary> getComments(){
+		return comments;
+	}
 
 	public void setCreationTime(Instant creationTime) {
 		this.creationTime = creationTime;
 	}
-
-
-	 public Set<Commentary> getComentaries() {
-		 Set<Commentary> comment = new HashSet<>();
-		 for(PostCommentary p : commentaries){
-			 comment.add(p.getCommentary());
-		 }
-		 return comment;
-	 }
 
 	@Override
 	public int hashCode() {
@@ -112,7 +107,8 @@ public class Post implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Post [id=" + id + ", creator=" + creator + ", content=" + content + ", creationTime=" + creationTime;
+		return "Post [id=" + id + ", creator=" + creator.getFirstName() + ", content=" + content + ", creationTime="
+				+ creationTime + "]";
 	}
 
 }

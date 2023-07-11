@@ -1,6 +1,7 @@
 package com.UserAPI.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,10 @@ public class UserService {
 		User newUser = new User();
 		newUser = userRepository.save(newUser);
 		return newUser;
+	}
+
+	public User FindById(Long id) {
+		Optional<User> users = userRepository.findById(id);
+		return users.get();
 	}
 }

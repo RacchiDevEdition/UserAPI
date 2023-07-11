@@ -1,6 +1,12 @@
 package com.UserAPI.Model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,9 +26,12 @@ public class Commentary implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "commentor_id")
 	private User commentor;
+	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "post_id")
 	private Post post;
@@ -66,7 +75,8 @@ public class Commentary implements Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
+	 
+	
 	public Integer getLikeCount() {
 		return likeCount;
 	}

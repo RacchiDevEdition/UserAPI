@@ -1,11 +1,13 @@
 package com.UserAPI.Model;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.UserAPI.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,17 +33,18 @@ public class User implements Serializable {
 	private Gender gender;
 	private String email;
 
+	
+
+	@JsonManagedReference
 	@OneToMany(mappedBy = "creator")
-	private Set<Post> posts = new HashSet<>();
+	private List<Post> posts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "id.creator")
-	private Set<UserPost> userPosts = new HashSet<>();
 
+	@JsonBackReference
 	@OneToMany(mappedBy = "commentor")
-	private Set<Commentary> commentaries = new HashSet<>();
+	private List<Commentary> commentaries = new ArrayList<>();
 
-	@OneToMany(mappedBy = "id.commentor")
-	private Set<PostCommentary> postCommentaries = new HashSet<>();
+	
 
 	public User(Long id, String title, String firstName, String lastName, String password, String nationality,
 			String email, Gender gender) {
@@ -53,8 +56,9 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.password = password;
 		this.nationality = nationality;
-		this.email = email;
-	}
+		this.email = email;		
+		
+		}
 
 	public User() {
 
@@ -116,21 +120,15 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public Set<Post> getPosts() {
-		Set<Post> post = new HashSet<>();
-		for (UserPost p : userPosts) {
-			post.add(p.getPost());
-		}
-		return post;
+	
+	public List<Post> getPosts() {	
+		return posts;
 	}
 
-	public Set<Commentary> getCommentaries() {
-		Set<Commentary> comments = new HashSet<>();
-		for (PostCommentary p : postCommentaries) {
-			comments.add(p.getCommentary());
-		}
-		return comments;
+	public List<Commentary> getCommentaries(){
+		return commentaries;
 	}
+
 
 	public String getEmail() {
 		return email;
@@ -161,7 +159,7 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [id=" + id + ", title=" + title + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", password=" + password + ", nationality=" + nationality + ", gender=" + gender + ", email=" + email
-				+ ", posts=" + posts + "]";
+				+ ", posts=" + posts.toArray() + "]";
 	}
 
 }
