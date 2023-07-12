@@ -1,12 +1,16 @@
 package com.UserAPI.Model;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import com.UserAPI.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -40,6 +44,7 @@ public class User implements Serializable {
 	private List<Post> posts = new ArrayList<>();
 
 
+	@JsonIgnore
 	@JsonBackReference
 	@OneToMany(mappedBy = "commentor")
 	private List<Commentary> commentaries = new ArrayList<>();
@@ -62,6 +67,18 @@ public class User implements Serializable {
 
 	public User() {
 
+	}
+
+	public User(User user) {
+		this.gender = user.getGender();
+		this.id = user.getId();
+		this.title = user.getTitle();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.password = user.get_SHA_512_SecurePassword(password, "1");
+		this.nationality = user.getNationality();
+		this.email = user.getEmail();		
+		
 	}
 
 	public Long getId() {
@@ -154,7 +171,23 @@ public class User implements Serializable {
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-
+	
+	public String get_SHA_512_SecurePassword(String password, String salt){
+		  String generatedPassword = null;
+		    try {
+		        MessageDigest md = MessageDigest.getInstance("SHA-512");
+		        md.update(salt.getBytes(StandardCharsets.UTF_8));
+		        byte[] bytes = md.digest(getPassword().getBytes(StandardCharsets.UTF_8));
+		        StringBuilder sb = new StringBuilder();
+		        for(int i=0; i< bytes.length ;i++){
+		            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+		        }
+		        generatedPassword = sb.toString();
+		    } catch (NoSuchAlgorithmException e) {
+		        e.printStackTrace();
+		    }
+		    return generatedPassword;
+	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", title=" + title + ", firstName=" + firstName + ", lastName=" + lastName

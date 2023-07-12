@@ -23,4 +23,5 @@ public class CommentaryController {
 		List<Commentary> list = commentaryService.findAll();
 		return list;
 	}
+	
 }

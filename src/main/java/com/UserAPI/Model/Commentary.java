@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -30,26 +31,29 @@ public class Commentary implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "commentor_id")
 	private User commentor;
-	
+
 	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "post_id")
 	private Post post;
 	private String content;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private String creationTime;
 	private Integer likeCount;
 
-	public Commentary(Long id, User commentor,Post post, String content, Integer likeCount) {
+	public Commentary(Long id, User commentor, Post post, String content, String creationTime, Integer likeCount) {
 		super();
 		this.id = id;
 		this.commentor = commentor;
 		this.post = post;
+		this.creationTime = creationTime;
 		this.content = content;
 		this.likeCount = likeCount;
 	}
-	
-	
+
 	public Commentary() {
-		
+
 	}
 
 	public Long getId() {
@@ -75,8 +79,7 @@ public class Commentary implements Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	 
-	
+
 	public Integer getLikeCount() {
 		return likeCount;
 	}
@@ -90,7 +93,5 @@ public class Commentary implements Serializable {
 		return "Commentary [id=" + id + ", commentor=" + commentor + ", post=" + post + ", content=" + content
 				+ ", likeCount=" + likeCount + "]";
 	}
-	
-	
 
 }
