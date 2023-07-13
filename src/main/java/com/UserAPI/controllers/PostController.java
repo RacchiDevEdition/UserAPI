@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +32,19 @@ public class PostController {
 		Post post = postService.findById(id);
 		return ResponseEntity.ok().body(post);
 	}
-	
+
+	@GetMapping(value = "/{id}/comments")
+	public Post getCommentaries(@PathVariable Long id) {
+		Post post = postService.getCommentaries(id);
+		return post;
+
+	}
+
+	@PostMapping(value = "/newpost", consumes = { "application/xml", "application/json" })
+
+	public Post newPost(@RequestBody Post newPost) {
+		Post p = postService.save(new Post(newPost));
+		return p;
+	}
+
 }

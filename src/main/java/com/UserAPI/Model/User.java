@@ -34,7 +34,7 @@ public class User implements Serializable {
 	private String lastName;
 	private String password;
 	private String nationality;
-	private Gender gender;
+	private Integer gender;
 	private String email;
 
 	
@@ -44,7 +44,6 @@ public class User implements Serializable {
 	private List<Post> posts = new ArrayList<>();
 
 
-	@JsonIgnore
 	@JsonBackReference
 	@OneToMany(mappedBy = "commentor")
 	private List<Commentary> commentaries = new ArrayList<>();
@@ -54,7 +53,7 @@ public class User implements Serializable {
 	public User(Long id, String title, String firstName, String lastName, String password, String nationality,
 			String email, Gender gender) {
 
-		this.gender = gender;
+		setGender(gender);
 		this.id = id;
 		this.title = title;
 		this.firstName = firstName;
@@ -70,7 +69,7 @@ public class User implements Serializable {
 	}
 
 	public User(User user) {
-		this.gender = user.getGender();
+		setGender(user.getGender());
 		this.id = user.getId();
 		this.title = user.getTitle();
 		this.firstName = user.getFirstName();
@@ -130,11 +129,11 @@ public class User implements Serializable {
 	}
 
 	public Gender getGender() {
-		return gender;
+		return Gender.valueOf(gender);
 	}
 
 	public void setGender(Gender gender) {
-		this.gender = gender;
+		this.gender = gender.getCode();
 	}
 
 	

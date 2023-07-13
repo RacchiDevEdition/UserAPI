@@ -25,7 +25,7 @@ public class UserService {
 	public User saveUser(User user) {
 
 		User newUser = new User(user);
-		newUser = userRepository.save(newUser);
+		userRepository.save(newUser);
 		return newUser;
 	}
 
@@ -35,13 +35,12 @@ public class UserService {
 	}
 
 	
-	public List<Commentary> getCommentaries(Long id) {
+	public User getCommentaries(Long id) {
 		User user = FindById(id);
-		List<Commentary> comments = new ArrayList<>();
-		for (Commentary c : comments) {
-			comments.add(c);
-		}
-		return user.getCommentaries();
+		user.getCommentaries();
+		return user;
 
 	}
+	
+
 }

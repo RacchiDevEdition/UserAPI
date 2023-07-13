@@ -1,10 +1,8 @@
 package com.UserAPI.Model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -27,12 +25,13 @@ public class Commentary implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonManagedReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "commentor_id")
 	private User commentor;
 
-	@JsonManagedReference
+	@JsonIgnore
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "post_id")
 	private Post post;
@@ -54,6 +53,15 @@ public class Commentary implements Serializable {
 
 	public Commentary() {
 
+	}
+
+	public Commentary(Commentary commentary) {
+		this.id = commentary.getId();
+		this.commentor = commentary.getCreator();
+		this.post = commentary.getPost();
+		this.creationTime = commentary.getCreationTime();
+		this.content = commentary.getContent();
+		this.likeCount = commentary.getLikeCount();
 	}
 
 	public Long getId() {
@@ -84,8 +92,36 @@ public class Commentary implements Serializable {
 		return likeCount;
 	}
 
+	public User getCommentor() {
+		return commentor;
+	}
+
+	public void setCommentor(User commentor) {
+		this.commentor = commentor;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+
+	public String getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(String creationTime) {
+		this.creationTime = creationTime;
+	}
+
 	public void setLikeCount(Integer likeCount) {
 		this.likeCount = likeCount;
+	}
+
+	public Integer incrementLike() {
+		return likeCount + 1; 
 	}
 
 	@Override

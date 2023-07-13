@@ -44,8 +44,9 @@ public class UserController {
 	
 	
 	@GetMapping(value = "/{id}/comments")
-	public List<Commentary> getCommentaries(@PathVariable Long id){
-		List<Commentary> user  = service.getCommentaries(id);
+	public User getCommentaries(@PathVariable Long id){
+		User user  = service.getCommentaries(id);
 		return user;
+		
 	}
 }

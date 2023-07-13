@@ -35,12 +35,12 @@ public class Post implements Serializable {
 	@JoinColumn(name = "creator_id")
 	private User creator;
 	private String content;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant creationTime;
 
 	@JsonIgnore
-	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(mappedBy = "post")
 	private List<Commentary> comments = new ArrayList<>();
 
@@ -53,6 +53,15 @@ public class Post implements Serializable {
 	}
 
 	public Post() {
+
+	}
+
+	public Post(Post post) {
+
+		this.id = post.id;
+		this.creator = post.creator;
+		this.content = post.content;
+		this.creationTime = post.creationTime;
 
 	}
 
@@ -79,8 +88,8 @@ public class Post implements Serializable {
 	public Instant getCreationTime() {
 		return creationTime;
 	}
-	
-	public List<Commentary> getComments(){
+
+	public List<Commentary> getComments() {
 		return comments;
 	}
 
