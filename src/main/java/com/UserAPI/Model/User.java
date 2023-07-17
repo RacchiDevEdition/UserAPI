@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.UserAPI.dto.DtoUser;
 import com.UserAPI.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,17 +39,14 @@ public class User implements Serializable {
 	private String email;
 
 	
-
+	@JsonIgnore
 	@JsonManagedReference
 	@OneToMany(mappedBy = "creator")
 	private List<Post> posts = new ArrayList<>();
 
-
 	@JsonBackReference
 	@OneToMany(mappedBy = "commentor")
 	private List<Commentary> commentaries = new ArrayList<>();
-
-	
 
 	public User(Long id, String title, String firstName, String lastName, String password, String nationality,
 			String email, Gender gender) {
@@ -60,24 +58,24 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.password = password;
 		this.nationality = nationality;
-		this.email = email;		
-		
-		}
+		this.email = email;
+
+	}
 
 	public User() {
 
 	}
 
-	public User(User user) {
-		setGender(user.getGender());
+	public User(DtoUser user) {
+		this.gender = user.getGender();
 		this.id = user.getId();
 		this.title = user.getTitle();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
-		this.password = user.get_SHA_512_SecurePassword(password, "1");
+		this.password = user.getPassword();
 		this.nationality = user.getNationality();
-		this.email = user.getEmail();		
-		
+		this.email = user.getEmail();
+
 	}
 
 	public Long getId() {
@@ -136,15 +134,13 @@ public class User implements Serializable {
 		this.gender = gender.getCode();
 	}
 
-	
-	public List<Post> getPosts() {	
+	public List<Post> getPosts() {
 		return posts;
 	}
 
-	public List<Commentary> getCommentaries(){
+	public List<Commentary> getCommentaries() {
 		return commentaries;
 	}
-
 
 	public String getEmail() {
 		return email;
@@ -170,23 +166,24 @@ public class User implements Serializable {
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	public String get_SHA_512_SecurePassword(String password, String salt){
-		  String generatedPassword = null;
-		    try {
-		        MessageDigest md = MessageDigest.getInstance("SHA-512");
-		        md.update(salt.getBytes(StandardCharsets.UTF_8));
-		        byte[] bytes = md.digest(getPassword().getBytes(StandardCharsets.UTF_8));
-		        StringBuilder sb = new StringBuilder();
-		        for(int i=0; i< bytes.length ;i++){
-		            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-		        }
-		        generatedPassword = sb.toString();
-		    } catch (NoSuchAlgorithmException e) {
-		        e.printStackTrace();
-		    }
-		    return generatedPassword;
+
+	public String get_SHA_512_SecurePassword(String password, String salt) {
+		String generatedPassword = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			md.update(salt.getBytes(StandardCharsets.UTF_8));
+			byte[] bytes = md.digest(getPassword().getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < bytes.length; i++) {
+				sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+			}
+			generatedPassword = sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return generatedPassword;
 	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", title=" + title + ", firstName=" + firstName + ", lastName=" + lastName

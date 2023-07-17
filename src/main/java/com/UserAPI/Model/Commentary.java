@@ -1,11 +1,14 @@
 package com.UserAPI.Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.BeanUtils;
+
+import com.UserAPI.dto.DtoCommentary;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +33,6 @@ public class Commentary implements Serializable {
 	@JoinColumn(name = "commentor_id")
 	private User commentor;
 
-	@JsonIgnore
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "post_id")
@@ -40,6 +42,7 @@ public class Commentary implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private String creationTime;
 	private Integer likeCount;
+	
 
 	public Commentary(Long id, User commentor, Post post, String content, String creationTime, Integer likeCount) {
 		super();
@@ -55,13 +58,10 @@ public class Commentary implements Serializable {
 
 	}
 
-	public Commentary(Commentary commentary) {
-		this.id = commentary.getId();
-		this.commentor = commentary.getCreator();
-		this.post = commentary.getPost();
-		this.creationTime = commentary.getCreationTime();
-		this.content = commentary.getContent();
-		this.likeCount = commentary.getLikeCount();
+	public Commentary(DtoCommentary commentary) {
+
+		BeanUtils.copyProperties(commentary, this);		
+
 	}
 
 	public Long getId() {
@@ -120,8 +120,9 @@ public class Commentary implements Serializable {
 		this.likeCount = likeCount;
 	}
 
+
 	public Integer incrementLike() {
-		return likeCount + 1; 
+		return likeCount + 1;
 	}
 
 	@Override

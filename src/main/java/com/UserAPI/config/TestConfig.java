@@ -72,9 +72,10 @@ public class TestConfig implements CommandLineRunner {
 				Gender.F);
 		User u19 = new User(null, "Miss", "Karura", null, "karura123", "BR", "karu@gmail.com",
 				Gender.F);
-		User u20 = new User(null, "Mr", "Rohn", null, "ronh123", "UK", "rohn@gmail.com",
+		User u20 = new User(null, "Mr", "Rohn", null, "rohn123", "UK", "rohn@gmail.com",
 				Gender.M);
 
+		
 		Post p1 = new Post(null, u1, "sexo", Instant.parse("2019-06-20T19:53:07Z"));
 		Post p2 = new Post(null, u2, "AAAAAAAAAAA", Instant.parse("2022-06-20T23:53:07Z"));
 		Post p3 = new Post(null, u1, "BBBBBBBBBBB", Instant.parse("2022-06-20T23:53:07Z"));

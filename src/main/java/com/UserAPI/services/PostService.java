@@ -1,14 +1,13 @@
 package com.UserAPI.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.UserAPI.Model.Commentary;
 import com.UserAPI.Model.Post;
+import com.UserAPI.dto.DtoCommentary;
+import com.UserAPI.dto.DtoPost;
 import com.UserAPI.repositories.PostRepository;
 
 @Service
@@ -17,27 +16,27 @@ public class PostService {
 	@Autowired
 	private PostRepository postRepository;
 
-	public List<Post> findAll() {
+	public List<DtoPost> findAll() {
 		List<Post> posts = postRepository.findAll();
-		return posts;
+		List<DtoPost> dtoPosts = posts.stream().map(x -> new DtoPost(x)).toList();
+		return dtoPosts;
 	}
 
-	public Post findById(Long id) {
-		Optional<Post> posts = postRepository.findById(id);
-		return posts.get();
+	public DtoPost findById(Long id) {
+		Post posts = postRepository.findById(id).get();
+		DtoPost findById = new DtoPost(posts);
+		return findById;
 	}
 
-	public Post getCommentaries(Long id) {
-		Post post = findById(id);
-		post.getComments();
-
-		return post;
-
+	public List<DtoCommentary> getCommentaries(Long id) {
+		DtoPost post = findById(id);
+		List<DtoCommentary> dto = post.getComments();
+		return dto;
 	}
 
-	public Post save(Post post) {
-		Post p = new Post(post);
-		postRepository.save(p);
-		return p;
+	public DtoPost save(Post dtoPost) {
+		Post p = postRepository.save(dtoPost);
+		DtoPost newPost = new DtoPost(p);
+		return newPost;
 	}
 }

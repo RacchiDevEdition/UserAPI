@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.UserAPI.Model.Post;
+import com.UserAPI.dto.DtoCommentary;
+import com.UserAPI.dto.DtoPost;
 import com.UserAPI.services.PostService;
 
 @RestController
@@ -22,28 +24,28 @@ public class PostController {
 	private PostService postService;
 
 	@GetMapping
-	public List<Post> findAll() {
-		List<Post> post = postService.findAll();
+	public List<DtoPost> findAll() {
+		List<DtoPost> post = postService.findAll();
 		return post;
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Post> findById(@PathVariable Long id) {
-		Post post = postService.findById(id);
+	public ResponseEntity<DtoPost> findById(@PathVariable Long id) {
+		DtoPost post = postService.findById(id);
 		return ResponseEntity.ok().body(post);
 	}
 
 	@GetMapping(value = "/{id}/comments")
-	public Post getCommentaries(@PathVariable Long id) {
-		Post post = postService.getCommentaries(id);
+	public List<DtoCommentary> getCommentaries(@PathVariable Long id) {
+		List<DtoCommentary> post = postService.getCommentaries(id);
 		return post;
 
 	}
 
 	@PostMapping(value = "/newpost", consumes = { "application/xml", "application/json" })
 
-	public Post newPost(@RequestBody Post newPost) {
-		Post p = postService.save(new Post(newPost));
+	public DtoPost newPost(@RequestBody DtoPost newPost) {
+		DtoPost p = postService.save(new Post(newPost));
 		return p;
 	}
 

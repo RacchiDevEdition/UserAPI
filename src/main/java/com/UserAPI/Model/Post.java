@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.modelmapper.ModelMapper;
+
+import com.UserAPI.dto.DtoPost;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,6 +33,7 @@ public class Post implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "creator_id")
@@ -43,7 +47,8 @@ public class Post implements Serializable {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "post")
 	private List<Commentary> comments = new ArrayList<>();
-
+	
+	
 	public Post(Long id, User creator, String content, Instant creationTime) {
 		this.id = id;
 		this.creator = creator;
@@ -56,12 +61,12 @@ public class Post implements Serializable {
 
 	}
 
-	public Post(Post post) {
+	public Post(DtoPost post) {
 
-		this.id = post.id;
-		this.creator = post.creator;
-		this.content = post.content;
-		this.creationTime = post.creationTime;
+		this.id = post.getId();
+		this.creator = post.getCreator();
+		this.content = post.getContent();
+		this.creationTime = post.getCreationTime();
 
 	}
 

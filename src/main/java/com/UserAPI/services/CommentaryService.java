@@ -1,16 +1,12 @@
 package com.UserAPI.services;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.hibernate.annotations.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.UserAPI.Model.Commentary;
+import com.UserAPI.dto.DtoCommentary;
 import com.UserAPI.repositories.CommentaryRepository;
 
 @Service
@@ -19,33 +15,39 @@ public class CommentaryService {
 	@Autowired
 	private CommentaryRepository commentaryRepository;
 
-	public List<Commentary> findAll() {
+	public List<DtoCommentary> findAll() {
 		List<Commentary> comments = commentaryRepository.findAll();
-		return comments;
+		List<DtoCommentary> findAll = comments.stream().map(x -> new DtoCommentary(x)).toList();
+		return findAll;
+
 	}
 
-	public Commentary findById(Long id) {
-		Optional<Commentary> comments = commentaryRepository.findById(id);
-		return comments.get();
+	public DtoCommentary findById(Long id) {
+		Commentary comment = commentaryRepository.findById(id).get();
+		DtoCommentary findById = new DtoCommentary(comment);
+		return findById;
 	}
 
-	public Commentary findMostLiked() {
+	public DtoCommentary findMostLiked() {
 		List<Commentary> comments = commentaryRepository.findAll();
-		Commentary comment = comments.stream().max((x, y) -> x.getLikeCount() - y.getLikeCount()).get();
-		return comment;
+		List<DtoCommentary> dto = comments.stream().map(x -> new DtoCommentary(x)).toList();
+		DtoCommentary mostLiked = dto.stream().max((x, y) -> x.getLikeCount() - y.getLikeCount()).get();
+		return mostLiked;
 	}
 
-	public Commentary giveLike(Long id) {
+	public DtoCommentary giveLike(Long id) {
 		Commentary commentary = commentaryRepository.findById(id).get();
 		commentary.setLikeCount(commentary.incrementLike());
-		return commentary;
+		commentaryRepository.save(commentary);
+		DtoCommentary liked = new DtoCommentary(commentary);
+		return liked;
 
 	}
 
-	public Commentary save(Commentary commentary) {
-		Commentary c = new Commentary(commentary);
-		commentaryRepository.save(c);
-		return c;
+	public DtoCommentary save(Commentary comment) {
+		Commentary c = commentaryRepository.save(comment);
+		DtoCommentary newComment = new DtoCommentary(c);
+		return newComment;
 
 	}
 }
