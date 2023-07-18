@@ -67,7 +67,7 @@ public class User implements Serializable {
 	}
 
 	public User(DtoUser user) {
-		this.gender = user.getGender();
+		this.gender = getGender().getCode();
 		this.id = user.getId();
 		this.title = user.getTitle();
 		this.firstName = user.getFirstName();

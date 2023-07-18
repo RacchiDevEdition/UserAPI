@@ -1,13 +1,12 @@
 package com.UserAPI.dto;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
 import com.UserAPI.Model.Commentary;
-
+import com.UserAPI.Model.User;
 
 public class DtoCommentary {
 
@@ -15,27 +14,19 @@ public class DtoCommentary {
 	private DtoPost post;
 	private String content;
 	private String creationTime;
-	private Integer likeCount;	
-	
-	private static List<Commentary> commentaries = new ArrayList<>();
-	
-
+	private Integer likeCount;
 
 	public DtoCommentary(Commentary commentary) {
-		BeanUtils.copyProperties(commentary, this);
-		commentaries.add(commentary);
-	}
-	
-	
-	public DtoCommentary() {}
 
-
-	public DtoUser getCommentor() {
-		return commentor;
+		this.commentor = new DtoUser(commentary.getCommentor());
+		this.content = commentary.getContent();
+		this.post = new DtoPost(commentary.getPost());
+		this.content = commentary.getContent();
+		this.creationTime = commentary.getCreationTime();
+		this.likeCount = commentary.getLikeCount();
 	}
 
-	public void setCommentor(DtoUser commentor) {
-		this.commentor = commentor;
+	public DtoCommentary() {
 	}
 
 	public DtoPost getPost() {
@@ -70,24 +61,13 @@ public class DtoCommentary {
 		this.likeCount = likeCount;
 	}
 
+	public DtoUser getCommentor() {
+		return commentor;
+	}
 
-	public List<Commentary> getCommentaries() {
-		return commentaries;
-	}	
-	
-	public static List<DtoCommentary> convert(List<Commentary> topicos) {
-	    List<DtoCommentary> dtos = new ArrayList<>();
-
-	    for(Commentary comment : commentaries) {
-	        DtoCommentary dto = new DtoCommentary(comment);
-
-	        dtos.add(dto);
-	    }
-
-	    return dtos;
+	public void setCommentor(DtoUser user) {
+		this.commentor = user;
 	}
 	
-	
-
 
 }

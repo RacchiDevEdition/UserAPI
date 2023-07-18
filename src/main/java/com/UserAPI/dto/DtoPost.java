@@ -8,20 +8,21 @@ import org.springframework.beans.BeanUtils;
 
 import com.UserAPI.Model.Post;
 import com.UserAPI.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class DtoPost {
 
 	private Long id;
-	private User creator;
+	private DtoUser creator;
 	private String content;
 	private Instant creationTime;
+	@JsonIgnore
 	private List<DtoCommentary> comments = new ArrayList<>();
-	private List<Post> posts = new ArrayList<>();
 
 
 	public DtoPost(Post post) {
 		BeanUtils.copyProperties(post, this);
-		posts.add(post);
+
 	}
 
 	public DtoPost() {
@@ -37,11 +38,11 @@ public class DtoPost {
 		this.id = id;
 	}
 
-	public User getCreator() {
+	public DtoUser getCreator() {
 		return creator;
 	}
 
-	public void setCreator(User creator) {
+	public void setCreator(DtoUser creator) {
 		this.creator = creator;
 	}
 
@@ -65,8 +66,4 @@ public class DtoPost {
 		return comments;
 	}
 	
-	public List<Post> getPosts() {
-		return posts;
-	}
-
 }

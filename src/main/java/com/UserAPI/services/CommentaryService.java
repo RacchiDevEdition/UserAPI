@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.UserAPI.Model.Commentary;
 import com.UserAPI.dto.DtoCommentary;
+import com.UserAPI.dto.DtoUser;
+import com.UserAPI.projections.DtoCommentaryProjection;
 import com.UserAPI.repositories.CommentaryRepository;
 
 @Service
@@ -48,6 +51,15 @@ public class CommentaryService {
 		Commentary c = commentaryRepository.save(comment);
 		DtoCommentary newComment = new DtoCommentary(c);
 		return newComment;
+
+	}
+
+	@Transactional
+	public DtoCommentary getCommentariesByUser(Long id) {
+		
+		Commentary comment = commentaryRepository.findById(id).get();
+		DtoCommentary byUser = new DtoCommentary(comment);
+		return byUser;
 
 	}
 }

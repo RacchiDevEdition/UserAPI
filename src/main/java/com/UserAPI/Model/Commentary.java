@@ -60,7 +60,10 @@ public class Commentary implements Serializable {
 
 	public Commentary(DtoCommentary commentary) {
 
-		BeanUtils.copyProperties(commentary, this);		
+		commentary.getContent();
+		commentary.getCreationTime();
+		commentary.getCommentor();
+		commentary.getPost();
 
 	}
 

@@ -1,14 +1,11 @@
 package com.UserAPI.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.UserAPI.Model.Commentary;
 import com.UserAPI.Model.User;
-import com.UserAPI.dto.DtoCommentary;
 import com.UserAPI.dto.DtoUser;
 import com.UserAPI.repositories.UserRepository;
 
@@ -18,6 +15,7 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	
 	public List<DtoUser> findAll() {
 		List<User> users = userRepository.findAll();
 		List<DtoUser> findAll = users.stream().map(x -> new DtoUser(x)).toList();
@@ -38,12 +36,4 @@ public class UserService {
 	}
 	
 	
-
-	public DtoUser getCommentaries(Long id) {
-		DtoUser user = FindById(id);
-		List<DtoCommentary> comments = user.getCommentaries();
-		DtoUser u2 = comments.get(0).getCommentor();
-		return u2; 
-
-	}
 }

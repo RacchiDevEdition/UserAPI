@@ -64,7 +64,7 @@ public class Post implements Serializable {
 	public Post(DtoPost post) {
 
 		this.id = post.getId();
-		this.creator = post.getCreator();
+		this.creator = new User(post.getCreator());
 		this.content = post.getContent();
 		this.creationTime = post.getCreationTime();
 
