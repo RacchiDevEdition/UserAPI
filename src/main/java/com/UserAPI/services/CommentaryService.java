@@ -4,19 +4,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.UserAPI.Model.Commentary;
 import com.UserAPI.dto.DtoCommentary;
-import com.UserAPI.dto.DtoUser;
-import com.UserAPI.projections.DtoCommentaryProjection;
 import com.UserAPI.repositories.CommentaryRepository;
+import org.modelmapper.ModelMapper;
+
 
 @Service
 public class CommentaryService {
 
 	@Autowired
 	private CommentaryRepository commentaryRepository;
+
+	ModelMapper mapper = new ModelMapper();
 
 	public List<DtoCommentary> findAll() {
 		List<Commentary> comments = commentaryRepository.findAll();
@@ -53,13 +53,7 @@ public class CommentaryService {
 		return newComment;
 
 	}
+	
 
-	@Transactional
-	public DtoCommentary getCommentariesByUser(Long id) {
-		
-		Commentary comment = commentaryRepository.findById(id).get();
-		DtoCommentary byUser = new DtoCommentary(comment);
-		return byUser;
 
-	}
 }

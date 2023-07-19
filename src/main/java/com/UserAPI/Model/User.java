@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,12 +40,12 @@ public class User implements Serializable {
 	private String email;
 
 	
+	
 	@JsonIgnore
-	@JsonManagedReference
 	@OneToMany(mappedBy = "creator")
 	private List<Post> posts = new ArrayList<>();
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "commentor")
 	private List<Commentary> commentaries = new ArrayList<>();
 

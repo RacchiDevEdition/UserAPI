@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.UserAPI.Model.User;
 import com.UserAPI.dto.DtoCommentary;
+import com.UserAPI.dto.DtoPost;
 import com.UserAPI.dto.DtoUser;
-import com.UserAPI.services.CommentaryService;
 import com.UserAPI.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -26,8 +26,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private CommentaryService commentaryService;
 
 	@GetMapping
 	public List<DtoUser> findAll() {
@@ -38,7 +36,7 @@ public class UserController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DtoUser> findById(@PathVariable Long id) {
 
-		DtoUser user = userService.FindById(id);
+		DtoUser user = userService.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
 
@@ -50,9 +48,20 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/{id}/comments")
-	public ResponseEntity<DtoCommentary> getCommentaries(@PathVariable Long id) {
-		DtoCommentary user = commentaryService.getCommentariesByUser(id);
-		return ResponseEntity.ok().body(user);
+	public ResponseEntity<List<DtoCommentary>> getComments(@PathVariable Long id) {
+		DtoUser user = userService.findById(id);
+		
+		System.out.println(user);
+		return ResponseEntity.ok().body(user.getCommentaries());
+		
+	}
+	
 
+	@GetMapping(value = "/{id}/posts")
+	public ResponseEntity<List<DtoPost>> getPosts(@PathVariable Long id) {
+		DtoUser user = userService.findById(id);
+		System.out.println(user);
+		return ResponseEntity.ok().body(user.getPosts());
+		
 	}
 }

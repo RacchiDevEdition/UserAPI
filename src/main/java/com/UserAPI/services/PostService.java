@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.UserAPI.Model.Post;
-import com.UserAPI.dto.DtoCommentary;
 import com.UserAPI.dto.DtoPost;
 import com.UserAPI.repositories.PostRepository;
 
@@ -28,11 +27,7 @@ public class PostService {
 		return findById;
 	}
 
-	public List<DtoCommentary> getCommentaries(Long id) {
-		DtoPost post = findById(id);
-		List<DtoCommentary> dto = post.getComments();
-		return dto;
-	}
+
 
 	public DtoPost save(Post dtoPost) {
 		Post p = postRepository.save(dtoPost);

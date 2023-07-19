@@ -1,12 +1,6 @@
 package com.UserAPI.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.BeanUtils;
-
 import com.UserAPI.Model.Commentary;
-import com.UserAPI.Model.User;
 
 public class DtoCommentary {
 
@@ -21,7 +15,6 @@ public class DtoCommentary {
 		this.commentor = new DtoUser(commentary.getCommentor());
 		this.content = commentary.getContent();
 		this.post = new DtoPost(commentary.getPost());
-		this.content = commentary.getContent();
 		this.creationTime = commentary.getCreationTime();
 		this.likeCount = commentary.getLikeCount();
 	}
@@ -68,6 +61,5 @@ public class DtoCommentary {
 	public void setCommentor(DtoUser user) {
 		this.commentor = user;
 	}
-	
 
 }

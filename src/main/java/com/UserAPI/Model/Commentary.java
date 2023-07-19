@@ -10,7 +10,9 @@ import com.UserAPI.dto.DtoCommentary;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,13 +30,14 @@ public class Commentary implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonBackReference
-	@ManyToOne
+	
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "commentor_id")
 	private User commentor;
 
-	@JsonBackReference
-	@ManyToOne
+	
+	
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Post post;
 	private String content;
@@ -133,5 +136,4 @@ public class Commentary implements Serializable {
 		return "Commentary [id=" + id + ", commentor=" + commentor + ", post=" + post + ", content=" + content
 				+ ", likeCount=" + likeCount + "]";
 	}
-
 }

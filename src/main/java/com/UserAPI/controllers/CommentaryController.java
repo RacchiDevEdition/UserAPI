@@ -15,7 +15,7 @@ import com.UserAPI.dto.DtoCommentary;
 import com.UserAPI.services.CommentaryService;
 
 @RestController
-@RequestMapping("/commentaries")
+@RequestMapping("/comments")
 public class CommentaryController {
 
 	@Autowired

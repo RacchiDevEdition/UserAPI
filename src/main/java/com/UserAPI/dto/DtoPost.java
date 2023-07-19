@@ -4,10 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
-
 import com.UserAPI.Model.Post;
-import com.UserAPI.Model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class DtoPost {
@@ -16,17 +13,19 @@ public class DtoPost {
 	private DtoUser creator;
 	private String content;
 	private Instant creationTime;
+
 	@JsonIgnore
 	private List<DtoCommentary> comments = new ArrayList<>();
 
-
 	public DtoPost(Post post) {
-		BeanUtils.copyProperties(post, this);
 
+		this.id = post.getId();
+		this.creator = new DtoUser(post.getCreator());
+		this.content = post.getContent();
+		this.creationTime = post.getCreationTime();
 	}
 
 	public DtoPost() {
-		
 
 	}
 
@@ -65,5 +64,5 @@ public class DtoPost {
 	public List<DtoCommentary> getComments() {
 		return comments;
 	}
-	
+
 }

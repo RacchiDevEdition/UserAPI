@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,8 +36,8 @@ public class Post implements Serializable {
 	private Long id;
 
 	
-	@JsonBackReference
-	@ManyToOne
+	
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "creator_id")
 	private User creator;
 	private String content;
@@ -43,9 +45,10 @@ public class Post implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant creationTime;
 
-	@JsonIgnore
+	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+
 	private List<Commentary> comments = new ArrayList<>();
 	
 	
@@ -101,6 +104,10 @@ public class Post implements Serializable {
 	public void setCreationTime(Instant creationTime) {
 		this.creationTime = creationTime;
 	}
+	public User getCreator() {
+		return creator;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -124,5 +131,4 @@ public class Post implements Serializable {
 		return "Post [id=" + id + ", creator=" + creator.getFirstName() + ", content=" + content + ", creationTime="
 				+ creationTime + "]";
 	}
-
 }

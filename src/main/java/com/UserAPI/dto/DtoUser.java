@@ -2,7 +2,7 @@ package com.UserAPI.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 import com.UserAPI.Model.User;
 import com.UserAPI.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -111,6 +111,30 @@ public class DtoUser {
 
 	public List<DtoCommentary> getCommentaries() {
 		return commentaries;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DtoUser other = (DtoUser) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public String toString() {
+		return "DtoUser [id=" + id + ", title=" + title + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", password=" + password + ", nationality=" + nationality + ", gender=" + gender + ", email=" + email
+				+ ", posts=" + posts + ", commentaries=" + commentaries + "]";
 	}
 
 }
